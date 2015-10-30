@@ -25,6 +25,10 @@ class Tile
     return value
   end
 
+  def is_bomb?
+    @value == :bomb
+  end
+
 end
 
 

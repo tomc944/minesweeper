@@ -33,7 +33,7 @@ class Board
     while bombs_left > 0
       x_pos, y_pos = rand(9), rand(9)
 
-      unless grid[x_pos][y_pos].value == :bomb
+      unless grid[x_pos][y_pos].is_bomb?
         grid[x_pos][y_pos].value = :bomb
         bombs_left -= 1
       end
@@ -44,7 +44,7 @@ class Board
   def assign_bomb_counts(grid)
     grid.each_with_index do |row, row_i|
       row.each_with_index do |tile, col|
-        unless tile.value == :bomb
+        unless tile.is_bomb?
           tile.value = neighbor_bomb_count(row_i, col)
         end
       end
@@ -74,7 +74,7 @@ class Board
   end
 
   def neighbor_bomb_count(pos)
-    neighbors(pos).count{ |tile| tile.value == :bomb }
+    neighbors(pos).count{ |tile| tile.is_bomb? }
   end
 
 
