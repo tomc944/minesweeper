@@ -1,22 +1,34 @@
 require_relative 'tile.rb'
 
 class Board
-  attr_accessor :grid
+  attr_accessor :grid, :bomb_count
 
-  def initialize(bombs = 10)
-    @grid = populate(bombs)
+  def initialize(bomb_count = 10)
+    @grid = populate(bomb_count)
+    @bomb_count = bomb_count
   end
 
-  def populate(bombs)
+  def populate(bomb_count)
     grid = Array.new(9) { Array.new(9) { Tile.new(0)} }
-    disperse_bombs(grid, bombs)
+    disperse_bombs(grid, bomb_count)
     assign_bomb_counts(grid)
   end
 
   private
 
-  def disperse_bombs(grid, bombs)
-    bombs_left = bombs
+  def render(grid)
+
+    grid.each do |row|
+      row.each do |tile|
+        print tile.to_s
+      end
+      puts
+    end
+
+  end
+
+  def disperse_bombs(grid, bomb_count)
+    bombs_left = bomb_count
 
     while bombs_left > 0
       x_pos, y_pos = rand(9), rand(9)
