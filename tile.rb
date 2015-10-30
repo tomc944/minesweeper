@@ -9,11 +9,17 @@ class Tile
   end
 
   def reveal
-    @revealed = true
+    @revealed = true unless @flagged
   end
 
   def toggle_flag
-    @flagged = !@flagged
+    @flagged = !@flagged unless @revealed
+  end
+
+  def to_s
+    return "F" if flagged
+    return "*" if value == :bomb
+    return value
   end
 
 end
