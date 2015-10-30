@@ -19,7 +19,7 @@ class Tile
   def to_s
 
     return "F" if flagged
-    return "_" if @reveal == false
+    return "_" if @revealed == false
     return "*" if value == :bomb
 
     return value

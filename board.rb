@@ -14,10 +14,10 @@ class Board
     assign_bomb_counts(@grid)
   end
 
-  private
+#  private
 
-  def render(grid)
-    grid.each do |row|
+  def render
+    @grid.each do |row|
       row.each do |tile|
         print tile.to_s
       end
@@ -40,10 +40,10 @@ class Board
 
   def assign_bomb_counts(grid)
     grid.each_with_index do |row, row_i|
-      debugger
+      #debugger
       row.each_with_index do |tile, col|
         unless tile.is_bomb?
-          grid[row_i][col] = neighbor_bomb_count([row_i, col])
+          grid[row_i][col].value = neighbor_bomb_count([row_i, col])
         end
       end
     end
@@ -62,7 +62,7 @@ class Board
       (-1..1).each do |y|
         new_x = x_pos + x
         new_y = y_pos + y
-        unless (x == 0 && y == 0) || new_x.between?(0,8) || new_y.between?(0,8)
+        unless (x == 0 && y == 0) || !new_x.between?(0,8) || !new_y.between?(0,8)
           neighbors << {tile: @grid[new_x][new_y], x: new_x, y: new_y}
         end
       end
@@ -72,7 +72,9 @@ class Board
   end
 
   def neighbor_bomb_count(pos)
-    neighbors(pos).count{ |neighbor| neighbor[:tile].is_bomb? }
+    # debugger
+    new_neighbors = neighbors(pos)
+    new_neighbors.count { |neighbor| neighbor[:tile].is_bomb? }
   end
 
 

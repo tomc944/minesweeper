@@ -33,9 +33,9 @@ class Game
 
   def prompt_input
     puts "Would you like to reveal (r) a tile or flag/unflag (f) a tile?"
-    choice = gets.chomp.downcase
+    choice = gets.strip.downcase
     puts "Where would you like to do so? (x,y)"
-    position = gets.chomp.split(",")
+    position = gets.strip.split(",")
     {move_type: choice, x: position[0].to_i, y: position[1].to_i}
   end
 
@@ -58,12 +58,12 @@ class Game
   end
 
   def reveal_neighbors(x, y)
-    queue = neighbors([x,y])
+    queue = board.neighbors([x,y])
     until queue.empty?
       neighbor = queue.shift
       unless neighbor[:tile].is_bomb? || neighbor[:tile].revealed
         neighbor[:tile].reveal
-        queue += neighbors([neighbor[:x], neighbor[:y]])
+        queue += board.neighbors([neighbor[:x], neighbor[:y]])
       end
     end
   end
