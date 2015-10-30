@@ -30,14 +30,3 @@ class Tile
   end
 
 end
-
-
-
-
-
-
-class Game
-
-
-
-end

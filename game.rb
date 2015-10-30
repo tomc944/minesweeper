@@ -1,5 +1,11 @@
 require_relative "board.rb"
 
+def reload
+  load 'game.rb'
+  load 'board.rb'
+  load 'tile.rb'
+end
+
 class Game
   attr_accessor :board
   def initialize
@@ -17,14 +23,6 @@ class Game
     board.render
     puts "You win" if won?
     puts "You lose!"
-    # render board
-    # welcome the user
-      # new game or reload?
-    # loop until game is over
-      #prompt user for input, give example (flag/ position)
-      #apply input
-      #re-render board
-    # congratulation or you suck
 
     # optional
       # save game
@@ -70,8 +68,6 @@ class Game
     end
   end
 
-
-  end
 
   def welcome_user
     puts "Welcome to Minesweeper"

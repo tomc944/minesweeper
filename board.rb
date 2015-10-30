@@ -1,30 +1,28 @@
 require_relative 'tile.rb'
-
+require 'byebug'
 class Board
   attr_accessor :grid, :bomb_count
 
   def initialize(bomb_count = 10)
-    @grid = populate(bomb_count)
+    @grid = Array.new(9) { Array.new(9) { Tile.new(0)} }
     @bomb_count = bomb_count
+    populate_grid
   end
 
-  def populate(bomb_count)
-    grid = Array.new(9) { Array.new(9) { Tile.new(0)} }
-    disperse_bombs(grid, bomb_count)
-    assign_bomb_counts(grid)
+  def populate_grid
+    disperse_bombs(@grid, @bomb_count)
+    assign_bomb_counts(@grid)
   end
 
   private
 
   def render(grid)
-
     grid.each do |row|
       row.each do |tile|
         print tile.to_s
       end
       puts
     end
-
   end
 
   def disperse_bombs(grid, bomb_count)
@@ -38,14 +36,14 @@ class Board
         bombs_left -= 1
       end
     end
-    grid
   end
 
   def assign_bomb_counts(grid)
     grid.each_with_index do |row, row_i|
+      debugger
       row.each_with_index do |tile, col|
         unless tile.is_bomb?
-          tile.value = neighbor_bomb_count(row_i, col)
+          grid[row_i][col] = neighbor_bomb_count([row_i, col])
         end
       end
     end
@@ -56,7 +54,7 @@ class Board
     neighbors = []
     x_pos = pos[0]
     y_pos = pos[1]
-
+    #debugger
     current_tile = @grid[x_pos][y_pos]
 
     #loop through some shit
