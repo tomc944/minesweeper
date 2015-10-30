@@ -18,6 +18,10 @@ class Board
       end
     end
 
+    # get neighbor bomb count
+    # assign that to tile value
+    # ignore if at bomb
+    # yay commits lunch time
 
   end
 
