@@ -65,7 +65,7 @@ class Board
         new_x = x_pos + x
         new_y = y_pos + y
         unless (x == 0 && y == 0) || new_x.between?(0,8) || new_y.between?(0,8)
-          neighbors << @grid[new_x][new_y]
+          neighbors << {tile: @grid[new_x][new_y], x: new_x, y: new_y}
         end
       end
     end
@@ -74,7 +74,7 @@ class Board
   end
 
   def neighbor_bomb_count(pos)
-    neighbors(pos).count{ |tile| tile.is_bomb? }
+    neighbors(pos).count{ |neighbor| neighbor[:tile].is_bomb? }
   end
 
 

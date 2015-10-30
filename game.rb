@@ -8,12 +8,15 @@ class Game
 
   def play
     welcome_user
-    until won?
+    until won? || lost?
       board.render
       user_move = prompt_input
       process_move(user_move)
     end
 
+    board.render
+    puts "You win" if won?
+    puts "You lose!"
     # render board
     # welcome the user
       # new game or reload?
@@ -48,11 +51,8 @@ class Game
     elsif user_move[:move_type] == "r"
       guessed_tile = get_tile(user_move[:x], user_move[:y])
       guessed_tile.reveal
-      if guessed_tile.is_bomb?
-
-      else
+      unless guessed_tile.is_bomb?
         reveal_neighbors(user_move[:x], user_move[:y])
-
       end
     else
       puts "c'mon dude"
@@ -60,15 +60,14 @@ class Game
   end
 
   def reveal_neighbors(x, y)
-    # queue = [self]
     queue = neighbors([x,y])
     until queue.empty?
-       current_tile = queue.shift
-    #   return value if current.value == target_value
-        unless current_tile.is_bomb?
-          current_tile.reveal
-    #   queue += children
-    # end
+      neighbor = queue.shift
+      unless neighbor[:tile].is_bomb? || neighbor[:tile].revealed
+        neighbor[:tile].reveal
+        queue += neighbors([neighbor[:x], neighbor[:y]])
+      end
+    end
   end
 
 
@@ -82,8 +81,12 @@ class Game
     all_tiles = board.grid.flatten
     safe_tiles = all_tiles.count - board.bomb_count
 
-
     safe_tiles == all_tiles.count { |tile| tile.revealed }
+  end
+
+  def lost?
+    all_tiles = board.grid.flatten
+    all_tiles.any?{|tile| tile.is_bomb? && tile.revealed}
   end
 
 end
