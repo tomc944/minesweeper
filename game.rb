@@ -22,13 +22,14 @@ class Game
 
     board.render
     puts "You win" if won?
+
     puts "You lose!"
+    reveal_entire_board
+  end
 
-    # optional
-      # save game
-      # restart game
-    #
-
+  def reveal_entire_board
+    board.grid.flatten.each { |tile| tile.reveal }
+    board.render
   end
 
   def prompt_input
@@ -49,7 +50,7 @@ class Game
     elsif user_move[:move_type] == "r"
       guessed_tile = get_tile(user_move[:x], user_move[:y])
       guessed_tile.reveal
-      unless guessed_tile.is_bomb?
+      unless guessed_tile.is_bomb? || guessed_tile.value > 0
         reveal_neighbors(user_move[:x], user_move[:y])
       end
     else
@@ -63,7 +64,9 @@ class Game
       neighbor = queue.shift
       unless neighbor[:tile].is_bomb? || neighbor[:tile].revealed
         neighbor[:tile].reveal
-        queue += board.neighbors([neighbor[:x], neighbor[:y]])
+        if neighbor[:tile].value == 0
+          queue += board.neighbors([neighbor[:x], neighbor[:y]])
+        end
       end
     end
   end
